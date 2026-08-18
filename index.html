@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IFdim - Estufa Virtual</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center; background-color: #f4f6f8; margin: 0; padding: 40px 20px; }
+        .container { max-width: 400px; margin: auto; background: white; padding: 40px 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        h1 { color: #2E7D32; margin-bottom: 5px; }
+        p { color: #666; margin-bottom: 30px; font-size: 16px; line-height: 1.5; }
+        .btn { display: block; width: 100%; padding: 16px; margin: 12px 0; border-radius: 8px; text-decoration: none; font-size: 16px; font-weight: bold; color: white; box-sizing: border-box; border: none; }
+        .btn-open { background-color: #2E7D32; } /* Verde institucional */
+        .btn-download { background-color: #C62828; } /* Vermelho institucional */
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌱 IFdim</h1>
+        <p id="mensagem">Carregando informações da planta...</p>
+
+        <!-- Botão 1: Abrir no App (Link dinâmico gerado pelo script abaixo) -->
+        <a id="btn-abrir" href="#" class="btn btn-open">🌿 Já tenho o App: Abrir</a>
+
+        <!-- Botão 2: Baixar App (COLOQUE SEU LINK DO DRIVE AQUI DENTRO DO HREF) -->
+        <a id="btn-baixar" href="https://drive.google.com/file/d/1AzDJejh1SiPFtckFWQtjFql21vVpHG_2/view?usp=sharing" class="btn btn-download">📥 Não tenho o App: Baixar</a>
+    </div>
+
+    <script>
+        // 1. Pega o nome da planta que estiver no link do QR Code (ex: ?especie=coroa-de-cristo)
+        const urlParams = new URLSearchParams(window.location.search);
+        const especie = urlParams.get('especie');
+
+        const btnAbrir = document.getElementById('btn-abrir');
+        const mensagem = document.getElementById('mensagem');
+
+        if (especie) {
+            // 2. Se encontrou a planta no link, configura o botão verde para o Custom Scheme do Flutter
+            btnAbrir.href = "ifdim://planta/" + especie;
+            
+            // 3. Formata o texto para ficar bonito na tela (troca os traços por espaço)
+            const nomeFormatado = especie.replace(/-/g, ' ').toUpperCase();
+            mensagem.innerText = "Você está acessando as informações sobre:\n" + nomeFormatado;
+        } else {
+            // Se alguém abrir o site solto sem ler QR Code, manda para a tela inicial
+            btnAbrir.href = "ifdim://inicio";
+            mensagem.innerText = "Bem-vindo à estufa virtual do IFdim. Baixe o app para continuar.";
+        }
+    </script>
+</body>
+</html>
